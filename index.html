@@ -522,7 +522,7 @@
   </button>
 
   <audio id="song" loop preload="auto">
-    <source src="Fikar%20Do%20Dooni%20Panj%20128%20Kbps.mp3" type="audio/mpeg" />
+    <source src="fikar-do-dooni-panj.mp3" type="audio/mpeg" />
   </audio>
 
   <main>
@@ -760,7 +760,7 @@
       }
     });
 
-    loveBtn.addEventListener("click", (e) => {
+    if (loveBtn) loveBtn.addEventListener("click", (e) => {
       const h = document.createElement("i");
       h.className = "fa-solid fa-heart float-heart";
       h.style.left = e.clientX - 8 + "px";
