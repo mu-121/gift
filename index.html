@@ -724,10 +724,24 @@
       petals.appendChild(p);
     }
 
-    function startMusic() {
+    /* ── Pre-seek on page load so 40s is ready before button click ── */
+    function seekToStart() {
       song.currentTime = START_AT;
-      const play = song.play();
-      if (play && play.catch) play.catch(() => {});
+    }
+
+    if (song.readyState >= 1) {
+      seekToStart();
+    } else {
+      song.addEventListener("loadedmetadata", seekToStart, { once: true });
+    }
+
+    /* ── Play immediately from 40s on button click ── */
+    function startMusic() {
+      if (song.currentTime < START_AT - 0.5) {
+        song.currentTime = START_AT;
+      }
+      const p = song.play();
+      if (p && p.catch) p.catch(() => {});
       chip.classList.remove("paused");
     }
 
@@ -738,17 +752,20 @@
 
     openBtn.addEventListener("click", openPage);
 
+    // Loop: jump back to START_AT instead of replaying from 0
     song.addEventListener("ended", () => {
       song.currentTime = START_AT;
       song.play();
     });
 
+    // Guard: if timeupdate shows we went before START_AT, jump forward
     song.addEventListener("timeupdate", () => {
-      if (song.currentTime > 0 && song.currentTime < START_AT - 0.4 && !song.paused) {
+      if (!song.paused && song.currentTime > 0 && song.currentTime < START_AT - 0.5) {
         song.currentTime = START_AT;
       }
     });
 
+    // Music chip toggle
     chip.addEventListener("click", () => {
       if (song.paused) {
         if (song.currentTime < START_AT) song.currentTime = START_AT;
