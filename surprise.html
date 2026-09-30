@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warda Nayab & Muhammad Usman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      --rose: #e8b4b8;
+      --blush: #f4d6d8;
+      --gold: #d4af7a;
+      --cream: #fff6ef;
+      --wine: #5c2430;
+      --night: #140c10;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      color: var(--cream);
+      background: var(--night);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(92, 36, 48, 0.55), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 90% 80%, rgba(212, 175, 122, 0.18), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(232, 180, 184, 0.12), transparent 60%),
+        linear-gradient(165deg, #1a0e12 0%, #0f090b 45%, #1c1014 100%);
+    }
+
+    .petals {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -40px;
+      width: 12px;
+      height: 16px;
+      background: radial-gradient(circle at 30% 30%, #f7d5d8, #c97a84);
+      border-radius: 70% 0 70% 0;
+      opacity: 0.55;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .float-heart {
+      position: fixed;
+      z-index: 45;
+      color: #f0b8bd;
+      font-size: 1rem;
+      pointer-events: none;
+      animation: rise 2.4s ease-out forwards;
+    }
+
+    @keyframes rise {
+      0% { opacity: 0.9; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-140px) scale(1.4); }
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(92, 36, 48, 0.35), transparent 55%),
+        rgba(12, 7, 9, 0.92);
+      backdrop-filter: blur(14px);
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+
+    .gate.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-heart {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(212, 175, 122, 0.45);
+      background: rgba(232, 180, 184, 0.12);
+      color: var(--blush);
+      font-size: 1.45rem;
+    }
+    
+
+    .gate h1 {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(2.8rem, 8vw, 5.2rem);
+      font-weight: 400;
+      color: var(--blush);
+      text-shadow: 0 8px 40px rgba(232, 180, 184, 0.35);
+    }
+
+    .gate p {
+      margin: 0.6rem 0 1.8rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      color: var(--gold);
+    }
+
+    .open-btn {
+      appearance: none;
+      border: 1px solid rgba(212, 175, 122, 0.55);
+      background: linear-gradient(180deg, rgba(232, 180, 184, 0.18), rgba(92, 36, 48, 0.4));
+      color: var(--cream);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      padding: 0.85rem 2.2rem;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 48px rgba(212, 175, 122, 0.2);
+    }
+
+    .music-chip {
+      position: fixed;
+      right: 1.1rem;
+      bottom: 1.1rem;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(20, 12, 16, 0.72);
+      border: 1px solid rgba(212, 175, 122, 0.35);
+      backdrop-filter: blur(10px);
+      color: var(--blush);
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+    }
+
+    .eq span {
+      width: 3px;
+      background: var(--gold);
+      border-radius: 2px;
+      animation: bounce 0.7s ease-in-out infinite;
+    }
+
+    .eq span:nth-child(2) { animation-delay: 0.12s; height: 10px; }
+    .eq span:nth-child(3) { animation-delay: 0.24s; height: 14px; }
+    .eq span:nth-child(4) { animation-delay: 0.08s; height: 8px; }
+
+    .music-chip.paused .eq span { animation: none; height: 4px; }
+
+    @keyframes bounce {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+
+    main { position: relative; z-index: 2; }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 4rem 1.4rem 5rem;
+    }
+
+    .kicker {
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .names {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(3rem, 10vw, 6.4rem);
+      line-height: 1.1;
+      color: var(--blush);
+    }
+
+    .amp {
+      display: block;
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--gold);
+      margin: 0.2rem 0;
+    }
+
+    .tagline {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      max-width: 36rem;
+      margin: 1.4rem auto 0;
+      color: rgba(255, 246, 239, 0.86);
+    }
+
+    .icon-row {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.7rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(232, 180, 184, 0.25);
+      background: rgba(255, 246, 239, 0.05);
+      font-size: 0.78rem;
+      color: var(--blush);
+    }
+
+    .pill i, .inline-i { color: var(--gold); }
+
+    .inline-i {
+      margin: 0 0.2rem;
+      font-size: 0.85em;
+    }
+
+    .scroll-hint {
+      margin-top: 2.4rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(212, 175, 122, 0.75);
+      animation: pulse 2.4s ease-in-out infinite;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .story {
+      width: min(980px, 92vw);
+      margin: 0 auto 3.2rem;
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.7rem;
+      color: var(--blush);
+      margin: 0.4rem 0 0.2rem;
+    }
+
+    .section-title i { color: var(--gold); }
+
+    .card {
+      background: linear-gradient(160deg, rgba(255, 246, 239, 0.07), rgba(92, 36, 48, 0.22));
+      border: 1px solid rgba(232, 180, 184, 0.18);
+      border-radius: 24px;
+      padding: 1.6rem 1.5rem 1.7rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+    }
+
+    .icon-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 0.9rem;
+      background: rgba(212, 175, 122, 0.14);
+      border: 1px solid rgba(212, 175, 122, 0.28);
+      color: var(--gold);
+      font-size: 1.15rem;
+    }
+
+    .card h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.85rem;
+      color: var(--rose);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .card h2 i { color: var(--gold); font-size: 0.72em; }
+
+    .card .roman {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.12rem;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+
+    .card p {
+      line-height: 1.75;
+      color: rgba(255, 246, 239, 0.88);
+      font-weight: 300;
+    }
+
+    .mini-list {
+      list-style: none;
+      margin-top: 0.9rem;
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .mini-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      font-size: 0.92rem;
+      color: rgba(255, 246, 239, 0.88);
+      font-weight: 300;
+    }
+
+    .mini-list i {
+      color: var(--gold);
+      margin-top: 0.2rem;
+      width: 1.1rem;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .moments {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+
+    .moment {
+      border-radius: 20px;
+      padding: 1.15rem 1rem 1.2rem;
+      text-align: center;
+      border: 1px solid rgba(232, 180, 184, 0.16);
+      background: rgba(20, 12, 16, 0.35);
+    }
+
+    .moment i {
+      font-size: 1.35rem;
+      color: var(--gold);
+      margin-bottom: 0.55rem;
+    }
+
+    .moment h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.15rem;
+      color: var(--blush);
+      margin-bottom: 0.25rem;
+    }
+
+    .moment p {
+      font-size: 0.8rem;
+      color: rgba(255, 246, 239, 0.72);
+      line-height: 1.5;
+    }
+
+    .quote {
+      text-align: center;
+      padding: 2rem 1.4rem;
+    }
+
+    .quote i { color: var(--gold); font-size: 1.3rem; }
+
+    .quote p {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 1.85rem);
+      max-width: 34rem;
+      margin: 0.8rem auto 0;
+      color: var(--blush);
+    }
+
+    .love-btn {
+      margin-top: 1.4rem;
+      appearance: none;
+      border: 1px solid rgba(232, 180, 184, 0.35);
+      background: rgba(232, 180, 184, 0.1);
+      color: var(--cream);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.1rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @media (min-width: 760px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .span { grid-column: 1 / -1; }
+      .moments { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .love {
+      min-height: 62vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 3rem 1.4rem 5.5rem;
+    }
+
+    .love-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    .love h2 {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(3.4rem, 12vw, 7rem);
+      color: var(--blush);
+      text-shadow: 0 10px 50px rgba(232, 180, 184, 0.35);
+    }
+
+    .love p {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      margin-top: 0.6rem;
+      color: var(--gold);
+    }
+
+    footer {
+      text-align: center;
+      padding: 0 1rem 3rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(232, 180, 184, 0.5);
+    }
+
+    footer i { margin: 0 0.25rem; color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="petals" id="petals"></div>
+
+  <div class="gate" id="gate">
+    <div>
+      <div class="gate-heart" aria-hidden="true"><i class="fa-solid fa-heart"></i></div>
+      <h1>Warda & Usman</h1>
+      <p><i class="fa-solid fa-infinity"></i> Our little world</p>
+      <button class="open-btn" id="openBtn" type="button">
+        <i class="fa-solid fa-music"></i>
+        Open this page of love
+      </button>
+    </div>
+  </div>
+
+  <button class="music-chip" id="musicChip" type="button" aria-label="Pause or play song">
+    <i class="fa-solid fa-headphones"></i>
+    <span class="eq" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+    Fikar Do Dooni Panj
+  </button>
+
+  <audio id="song" loop preload="auto">
+    <source src="Fikar%20Do%20Dooni%20Panj%20128%20Kbps.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="kicker"><i class="fa-solid fa-ring"></i> Forever in the same frame</p>
+        <h1 class="names">
+          Warda Nayab
+          <span class="amp"><i class="fa-solid fa-heart"></i> and</span>
+          Muhammad Usman
+        </h1>
+        <p class="tagline">
+          When Warda is busy, Usman stays with her. He helps, makes chai, cooks dinner,
+          and they go on so many outings. I love you — hamesha.
+        </p>
+        <div class="icon-row">
+          <span class="pill"><i class="fa-solid fa-briefcase"></i> Busy days</span>
+          <span class="pill"><i class="fa-solid fa-hand-holding-heart"></i> Help</span>
+          <span class="pill"><i class="fa-solid fa-mug-hot"></i> Chai</span>
+          <span class="pill"><i class="fa-solid fa-utensils"></i> Dinner</span>
+          <span class="pill"><i class="fa-solid fa-car-side"></i> Outings</span>
+          <span class="pill"><i class="fa-solid fa-moon"></i> Late talks</span>
+          <span class="pill"><i class="fa-solid fa-star"></i> Little joys</span>
+        </div>
+        <p class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll for our days</p>
+      </div>
+    </section>
+
+    <section class="story">
+      <article class="card span">
+        <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h2><i class="fa-solid fa-crown"></i> Warda is busy — and she is beautiful</h2>
+        <p class="roman"><i class="fa-solid fa-feather"></i> Duniya chalti rahe, main aap ke paas rahun.</p>
+        <p>
+          Warda Nayab’s days move fast —
+          <i class="fa-solid fa-briefcase inline-i"></i> work,
+          <i class="fa-solid fa-cloud inline-i"></i> thoughts,
+          <i class="fa-solid fa-scale-balanced inline-i"></i> duty, and a soft smile.
+          Being busy is part of her story. This page is the same truth that lives at home:
+          she keeps going, and Muhammad Usman walks with her step
+          <i class="fa-solid fa-shoe-prints inline-i"></i>.
+        </p>
+      </article>
+
+      <div class="grid">
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <h2><i class="fa-solid fa-handshake-angle"></i> He stays with her</h2>
+          <p class="roman"><i class="fa-solid fa-house"></i> Main saath hoon. Help roz ka pyar hai.</p>
+          <p>
+            Usman is not only watching
+            <i class="fa-solid fa-eye inline-i"></i>.
+            When Warda is busy, he is right there —
+            holding her hand
+            <i class="fa-solid fa-hand-holding-hand inline-i"></i>,
+            making the load lighter, saying “I am here” without a lot of noise.
+          </p>
+          <ul class="mini-list">
+            <li><i class="fa-solid fa-check"></i> He notices when she is tired.</li>
+            <li><i class="fa-solid fa-check"></i> He takes small tasks so she can breathe.</li>
+            <li><i class="fa-solid fa-check"></i> Help is not a speech. It is everyday love.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-mug-hot"></i></div>
+          <h2><i class="fa-solid fa-leaf"></i> Chai, made with love</h2>
+          <p class="roman"><i class="fa-solid fa-mug-saucer"></i> Ek cup chai, poora din naram.</p>
+          <p>
+            After tired hours
+            <i class="fa-solid fa-clock inline-i"></i>,
+            or in the middle of a talk — Usman makes chai.
+            Steam
+            <i class="fa-solid fa-cloud inline-i"></i>,
+            a cup, and that moment when Warda pauses. This small ritual
+            brings them back to each other.
+          </p>
+          <ul class="mini-list">
+            <li><i class="fa-solid fa-temperature-high"></i> Garam cup, naram pause.</li>
+            <li><i class="fa-solid fa-heart"></i> One sip, then the day feels lighter.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-utensils"></i></div>
+          <h2><i class="fa-solid fa-kitchen-set"></i> Dinner at home</h2>
+          <p class="roman"><i class="fa-solid fa-bowl-food"></i> Raat ka khana, aap ke liye.</p>
+          <p>
+            Dinner is more than a plate
+            <i class="fa-solid fa-plate-wheat inline-i"></i>.
+            Usman stands in the kitchen
+            <i class="fa-solid fa-fire-burner inline-i"></i>
+            and sets peace on the table after Warda’s day. Food, conversation, a tired smile —
+            that is how the house stays warm
+            <i class="fa-solid fa-house inline-i"></i>.
+          </p>
+          <ul class="mini-list">
+            <li><i class="fa-solid fa-lightbulb"></i> Soft lights, slow evening.</li>
+            <li><i class="fa-solid fa-comments"></i> Baatein with the meal — ghar ka sukoon.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></div>
+          <h2><i class="fa-solid fa-car-side"></i> So many outings</h2>
+          <p class="roman"><i class="fa-solid fa-wind"></i> Shehar, hawa, aur hum.</p>
+          <p>
+            Even when life is busy, they still go out
+            <i class="fa-solid fa-road inline-i"></i>.
+            Roads, a chai shop, evening lights
+            <i class="fa-solid fa-city inline-i"></i>,
+            laughter. Warda and Usman — two people, one map
+            <i class="fa-solid fa-map inline-i"></i>,
+            and the feeling that the world can wait with them.
+          </p>
+          <ul class="mini-list">
+            <li><i class="fa-solid fa-camera"></i> Photos, windows, little stops.</li>
+            <li><i class="fa-solid fa-ice-cream"></i> Sweet treats after a long day.</li>
+            <li><i class="fa-solid fa-sun"></i> Shaam ki roshni, unke saath.</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 class="section-title"><i class="fa-solid fa-images"></i> Little moments we keep</h2>
+      <div class="moments span">
+        <article class="moment">
+          <i class="fa-solid fa-sun"></i>
+          <h3>Morning</h3>
+          <p>A quiet start, then the day begins together.</p>
+        </article>
+        <article class="moment">
+          <i class="fa-solid fa-phone"></i>
+          <h3>Check-in</h3>
+          <p>A message in the middle of a busy hour: I am here.</p>
+        </article>
+        <article class="moment">
+          <i class="fa-solid fa-moon"></i>
+          <h3>Night</h3>
+          <p>Late talks, tired smiles, the house going soft.</p>
+        </article>
+        <article class="moment">
+          <i class="fa-solid fa-star"></i>
+          <h3>Promise</h3>
+          <p>Wherever she is busy, he stays close. Hamesha.</p>
+        </article>
+      </div>
+
+      <article class="card span">
+        <div class="icon-badge" aria-hidden="true"><i class="fa-solid fa-gift"></i></div>
+        <h2><i class="fa-solid fa-book-open"></i> What this love looks like</h2>
+        <p class="roman"><i class="fa-solid fa-quote-left"></i> Pyar badi baat nahi — roz ke kaam mein chhupa hota hai.</p>
+        <ul class="mini-list">
+          <li><i class="fa-solid fa-heart"></i> He chooses her even on the loudest days.</li>
+          <li><i class="fa-solid fa-mug-hot"></i> He makes chai when words feel heavy.</li>
+          <li><i class="fa-solid fa-utensils"></i> He cooks dinner so the evening can rest.</li>
+          <li><i class="fa-solid fa-route"></i> He plans outings so joy still has a road.</li>
+          <li><i class="fa-solid fa-shield-heart"></i> He stays — that is the whole poem.</li>
+        </ul>
+      </article>
+    </section>
+
+
+
+    <section class="love">
+      <div>
+        <div class="love-icons" aria-hidden="true">
+          <i class="fa-solid fa-heart"></i>
+          <i class="fa-regular fa-heart"></i>
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <h2>I love you</h2>
+        <p><i class="fa-solid fa-infinity"></i> Warda Nayab — from Muhammad Usman’s heart, hamesha.</p>
+      </div>
+    </section>
+
+    <footer>
+      Made with <i class="fa-solid fa-heart"></i> a full heart
+    
+      <i class="fa-solid fa-star"></i> for Warda & Usman
+    </footer>
+  </main>
+
+  <script>
+    const START_AT = 40;
+    const song = document.getElementById("song");
+    const gate = document.getElementById("gate");
+    const openBtn = document.getElementById("openBtn");
+    const chip = document.getElementById("musicChip");
+    const petals = document.getElementById("petals");
+    const loveBtn = document.getElementById("loveBtn");
+
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement("span");
+      p.className = "petal";
+      p.style.left = Math.random() * 100 + "%";
+      p.style.animationDuration = 8 + Math.random() * 10 + "s";
+      p.style.animationDelay = Math.random() * 8 + "s";
+      p.style.transform = "scale(" + (0.6 + Math.random() * 0.8) + ")";
+      petals.appendChild(p);
+    }
+
+    function startMusic() {
+      song.currentTime = START_AT;
+      const play = song.play();
+      if (play && play.catch) play.catch(() => {});
+      chip.classList.remove("paused");
+    }
+
+    function openPage() {
+      gate.classList.add("hide");
+      startMusic();
+    }
+
+    openBtn.addEventListener("click", openPage);
+
+    song.addEventListener("ended", () => {
+      song.currentTime = START_AT;
+      song.play();
+    });
+
+    song.addEventListener("timeupdate", () => {
+      if (song.currentTime > 0 && song.currentTime < START_AT - 0.4 && !song.paused) {
+        song.currentTime = START_AT;
+      }
+    });
+
+    chip.addEventListener("click", () => {
+      if (song.paused) {
+        if (song.currentTime < START_AT) song.currentTime = START_AT;
+        song.play();
+        chip.classList.remove("paused");
+      } else {
+        song.pause();
+        chip.classList.add("paused");
+      }
+    });
+
+    loveBtn.addEventListener("click", (e) => {
+      const h = document.createElement("i");
+      h.className = "fa-solid fa-heart float-heart";
+      h.style.left = e.clientX - 8 + "px";
+      h.style.top = e.clientY - 8 + "px";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 2400);
+    });
+  </script>
+</body>
+</html>
