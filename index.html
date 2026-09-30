@@ -707,13 +707,14 @@
 
   <script>
     const START_AT = 40;
-    const song = document.getElementById("song");
-    const gate = document.getElementById("gate");
+    const song    = document.getElementById("song");
+    const gate    = document.getElementById("gate");
     const openBtn = document.getElementById("openBtn");
-    const chip = document.getElementById("musicChip");
-    const petals = document.getElementById("petals");
+    const chip    = document.getElementById("musicChip");
+    const petals  = document.getElementById("petals");
     const loveBtn = document.getElementById("loveBtn");
 
+    /* ── Petals ── */
     for (let i = 0; i < 18; i++) {
       const p = document.createElement("span");
       p.className = "petal";
@@ -724,48 +725,57 @@
       petals.appendChild(p);
     }
 
-    /* ── Pre-seek on page load so 40s is ready before button click ── */
-    function seekToStart() {
-      song.currentTime = START_AT;
-    }
-
-    if (song.readyState >= 1) {
-      seekToStart();
-    } else {
-      song.addEventListener("loadedmetadata", seekToStart, { once: true });
-    }
-
-    /* ── Play immediately from 40s on button click ── */
-    function startMusic() {
-      if (song.currentTime < START_AT - 0.5) {
-        song.currentTime = START_AT;
+    /* ── Mobile-safe play from 40s ──
+       Mobile browsers block preload until user gesture.
+       So we do everything inside the click: load → seek → play.
+    ── */
+    function playFromStart() {
+      function doPlay() {
+        const p = song.play();
+        if (p && p.catch) p.catch(() => {});
+        chip.classList.remove("paused");
       }
-      const p = song.play();
-      if (p && p.catch) p.catch(() => {});
-      chip.classList.remove("paused");
+
+      function doSeek() {
+        song.currentTime = START_AT;
+        // After seek is done, play
+        if (song.seeking) {
+          song.addEventListener("seeked", doPlay, { once: true });
+        } else {
+          doPlay();
+        }
+      }
+
+      // If metadata already loaded (desktop / fast connection)
+      if (song.readyState >= 1) {
+        doSeek();
+      } else {
+        // Mobile: metadata not loaded yet — load() inside user gesture then seek
+        song.addEventListener("loadedmetadata", doSeek, { once: true });
+        song.load();
+      }
     }
 
-    function openPage() {
+    /* ── Open button ── */
+    openBtn.addEventListener("click", () => {
       gate.classList.add("hide");
-      startMusic();
-    }
+      playFromStart();
+    });
 
-    openBtn.addEventListener("click", openPage);
-
-    // Loop: jump back to START_AT instead of replaying from 0
+    /* ── Loop: restart at 40s ── */
     song.addEventListener("ended", () => {
       song.currentTime = START_AT;
       song.play();
     });
 
-    // Guard: if timeupdate shows we went before START_AT, jump forward
+    /* ── Guard: if somehow playing before 40s, jump forward ── */
     song.addEventListener("timeupdate", () => {
-      if (!song.paused && song.currentTime > 0 && song.currentTime < START_AT - 0.5) {
+      if (!song.paused && song.currentTime > 0 && song.currentTime < START_AT - 1) {
         song.currentTime = START_AT;
       }
     });
 
-    // Music chip toggle
+    /* ── Music chip toggle ── */
     chip.addEventListener("click", () => {
       if (song.paused) {
         if (song.currentTime < START_AT) song.currentTime = START_AT;
@@ -781,7 +791,7 @@
       const h = document.createElement("i");
       h.className = "fa-solid fa-heart float-heart";
       h.style.left = e.clientX - 8 + "px";
-      h.style.top = e.clientY - 8 + "px";
+      h.style.top  = e.clientY - 8 + "px";
       document.body.appendChild(h);
       setTimeout(() => h.remove(), 2400);
     });
